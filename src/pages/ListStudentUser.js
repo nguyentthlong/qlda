@@ -10,10 +10,6 @@ export const ListStudent = () => {
     // const [lops, setLop] = useState([]);
 
     useEffect(() => {
-        getAllStudent();
-    }, []);
-
-    const getAllStudent = () => {
         StudentService.getAllStudent()
             .then((response) => {
                 setStudents(response.data);
@@ -23,24 +19,76 @@ export const ListStudent = () => {
             .catch((error) => {
                 console.log(error);
             });
-    };
-
-    const deleteStudent = (studentMsv) => {
-        StudentService.deleteStudent(studentMsv)
-            .then((response) => {
-                getAllStudent();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        alert('Chụp lại ảnh vì không thể hoàn tác');
-        // console.log(studentMsv);
-    };
+    }, []);
 
     // function getLopID(tenLop, lopID) {
     //     const lopIDDetails = lopID.find((item) => item.tenLop === tenLop);
     //     return lopIDDetails?.name || 'lopID not available';
     // }
+
+    function testClickEvent(param) {
+        alert('Row Click Event');
+    }
+    const data = () => {
+        return {
+            columns: [
+                {
+                    label: 'Mã Sinh Viên',
+                    field: 'msv',
+                    width: 150,
+                    attributes: {
+                        'aria-controls': 'DataTable',
+                        'aria-label': 'Name',
+                    },
+                },
+                {
+                    label: 'Họ Tên',
+                    field: 'position',
+                    width: 270,
+                },
+                {
+                    label: 'Office',
+                    field: 'office',
+                    width: 200,
+                },
+                {
+                    label: 'Age',
+                    field: 'age',
+                    sort: 'asc',
+                    width: 100,
+                },
+                {
+                    label: 'Start date',
+                    field: 'date',
+                    sort: 'disabled',
+                    width: 150,
+                },
+                {
+                    label: 'Salary',
+                    field: 'salary',
+                    sort: 'disabled',
+                    width: 100,
+                },
+                {
+                    label: 'Phone',
+                    field: 'phone',
+                    sort: 'disabled',
+                    width: 100,
+                },
+            ],
+            rows: [
+                {
+                    msv: 'Tiger Nixon',
+                    position: 'System Architect',
+                    office: 'Edinburgh',
+                    age: '61',
+                    date: '2011/04/25',
+                    salary: '$320',
+                    clickEvent: () => testClickEvent(1),
+                },
+            ],
+        };
+    };
 
     return (
         <div className="d-flex">
@@ -84,25 +132,36 @@ export const ListStudent = () => {
                                             <td>{student.gender}</td>
                                             <td>{student.phone}</td>
                                             <td>
-                                                <Link
-                                                    className="btn btn-info mb-1 mx-1"
-                                                    to={`/edit-student/${student.msv}`}
-                                                >
+                                                <Link className="btn btn-info" to={`/edit-student/${student.msv}`}>
                                                     Update
                                                 </Link>
-                                                <button
-                                                    className="btn btn-danger mb-1 mx-1"
-                                                    onClick={() => deleteStudent(student.msv)}
-                                                >
-                                                    Xóa
-                                                </button>
                                             </td>
                                         </tr>
                                     ))}
+                                    {/* {lop.map((lop) => (
+                                        <td>{lop.ten_lop}</td>
+                                    ))} */}
                                 </tbody>
                             </table>
                         </div>
+                        {/* <CDBContainer>
+                            <CDBCard>
+                                <CDBCardBody>
+                                    <CDBDataTable
+                                        striped
+                                        bordered
+                                        hover
+                                        entriesOptions={[5, 20, 25]}
+                                        entries={5}
+                                        pagesAmount={4}
+                                        data={data()}
+                                        materialSearch={true}
+                                    />
+                                </CDBCardBody>
+                            </CDBCard>
+                        </CDBContainer> */}
                     </div>
+                    {/* CDBPagination = Pagination */}
                 </div>
             </div>
         </div>

@@ -10,14 +10,14 @@ import {
     CDBIcon,
     CDBCollapse,
 } from 'cdbreact';
-import './Hero404.css';
+import './Error404.css';
 import { Link } from 'react-router-dom';
 
-export const Hero404 = () => {
+export const Error404 = () => {
     const [collapse, setCollapse] = useState(false);
 
     return (
-        <div className="hero404">
+        <div className="error404">
             <div className="page-container">
                 {/* <header className="navigation">
                     <CDBNavbar className="bg-transparent p-0" expand="md" light scrolling>
@@ -77,7 +77,7 @@ export const Hero404 = () => {
                             </Link>
                         </CDBBtn>
                     </div>
-                    <img className="image404" alt="404" src="/img/pages/hero404.png" />
+                    <img className="image404" alt="404" src="/img/pages/error404.png" />
                 </section>
             </div>
         </div>

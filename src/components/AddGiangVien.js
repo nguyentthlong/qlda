@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CDBInput } from 'cdbreact';
 import Sidebar from '../Sidebar';
 import Navbar from '../Navbar';
 import GiangVienService from '../services/GiangVienService';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export const AddGiangVien = () => {
     const [idGiangVien, setIdGiangVien] = useState('');
@@ -15,23 +15,64 @@ export const AddGiangVien = () => {
     const [phone, setPhone] = useState('');
     const [hocVi, setHocVi] = useState('');
     const [chucVu, setChucVu] = useState('');
+    const { IdGiangVien } = useParams();
+
     //su dung useHistory hook de dieu huong
     const history = useNavigate();
     //e = event
-    const saveGiangVien = (e) => {
+    const saveOrUpdateGiangVien = (e) => {
         e.preventDefault();
 
         const giangvien = { idGiangVien, tenGiangVien, email, address, birthday, gender, phone, hocVi, chucVu };
 
-        GiangVienService.createGiangVien(giangvien)
+        if (IdGiangVien) {
+            GiangVienService.updateGiangVien(IdGiangVien, giangvien)
+                .then((response) => {
+                    // console.log(response.data);
+                    history('/giangvien');
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert('Nhập mã giảng viên');
+                });
+        } else {
+            GiangVienService.createGiangVien(giangvien)
+                .then((response) => {
+                    console.log(response.data);
+                    history('/giangvien');
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert('Nhập thông tin');
+                });
+        }
+    };
+
+    useEffect(() => {
+        GiangVienService.getGiangVienById(IdGiangVien)
             .then((response) => {
-                console.log(response.data);
-                history('/giangvien');
+                // setMsv(response.data.msv);
+                setTenGiangVien(response.data.tenGiangVien);
+                setEmail(response.data.email);
+                setAddress(response.data.address);
+                setBirthday(response.data.birthday);
+                setGender(response.data.gender);
+                setPhone(response.data.phone);
+                setHocVi(response.data.hocVi);
+                setChucVu(response.data.chucVu);
             })
             .catch((error) => {
                 console.log(error);
-                alert('Nhập thông tin');
             });
+    }, []);
+
+    const title = () => {
+        //Msv gọi bên router lấy ra text
+        if (IdGiangVien) {
+            return <h2 className="text-center">Sửa Thông Tin Giảng Viên</h2>;
+        } else {
+            return <h2 className="text-center">Thêm Giảng Viên</h2>;
+        }
     };
 
     return (
@@ -47,9 +88,9 @@ export const AddGiangVien = () => {
                 <div style={{ height: '100%' }}>
                     <div style={{ padding: '20px 5%', height: 'calc(100% - 64px)', overflowY: 'scroll' }}>
                         <div className="mt-5 w-100">
-                            <h4 className="font-weight-bold mb-3">Thêm giảng viên</h4>
+                            {title()}
                             <div className="form-group mb-2">
-                                <label className="form-label"> Mã giảng viên</label>
+                                {/* <label className="form-label"> Mã giảng viên</label>
                                 <CDBInput
                                     type="number"
                                     placeholder=""
@@ -58,7 +99,7 @@ export const AddGiangVien = () => {
                                     value={idGiangVien}
                                     //e = event
                                     onChange={(e) => setIdGiangVien(e.target.value)}
-                                ></CDBInput>
+                                ></CDBInput> */}
                                 <div className="form-group mb-2">
                                     <label className="form-label"> Họ tên</label>
                                     <input
@@ -156,8 +197,8 @@ export const AddGiangVien = () => {
                                     ></input>
                                 </div>
 
-                                <button className="btn btn-success" onClick={(e) => saveGiangVien(e)}>
-                                    Thêm
+                                <button className="btn btn-success mx-2" onClick={(e) => saveOrUpdateGiangVien(e)}>
+                                    Đồng ý
                                 </button>
                                 <Link to="/giangvien" className="btn btn-danger">
                                     Hủy

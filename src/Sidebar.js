@@ -33,9 +33,9 @@ const Sidebar = () => {
                         <NavLink exact to="/detai" activeClassName="activeClicked">
                             <CDBSidebarMenuItem icon="list">Danh sách đề tài</CDBSidebarMenuItem>
                         </NavLink>
-                        <NavLink exact to="/tables" activeClassName="activeClicked">
+                        {/* <NavLink exact to="/tables" activeClassName="activeClicked">
                             <CDBSidebarMenuItem icon="table">Hướng dẫn</CDBSidebarMenuItem>
-                        </NavLink>
+                        </NavLink> */}
                         <NavLink exact to="/profile" activeClassName="activeClicked">
                             <CDBSidebarMenuItem icon="user">profile</CDBSidebarMenuItem>
                         </NavLink>

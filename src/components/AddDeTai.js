@@ -92,8 +92,8 @@ export const AddDeTai = () => {
                                     ></input>
                                 </div>
 
-                                <button className="btn btn-success" onClick={(e) => saveDetai(e)}>
-                                    Thêm
+                                <button className="btn btn-success mx-2" onClick={(e) => saveDetai(e)}>
+                                    Đồng ý
                                 </button>
                                 <Link to="/detai" className="btn btn-danger">
                                     Hủy

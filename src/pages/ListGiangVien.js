@@ -9,6 +9,10 @@ export const ListGiangVien = () => {
     const [giangvien, setGiangVien] = useState([]);
 
     useEffect(() => {
+        getAllGiangVien();
+    }, []);
+
+    const getAllGiangVien = () => {
         GiangVienService.getAllGiangVien()
             .then((response) => {
                 setGiangVien(response.data);
@@ -17,7 +21,19 @@ export const ListGiangVien = () => {
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+    };
+
+    const deleteGiangVien = (giangvienId) => {
+        GiangVienService.deleteGiangVien(giangvienId)
+            .then((response) => {
+                getAllGiangVien();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        // alert('Chụp lại ảnh vì không thể hoàn tác');
+        // console.log(giangvienId);
+    };
 
     return (
         <div className="d-flex">
@@ -33,7 +49,7 @@ export const ListGiangVien = () => {
                         <div className="mt-5 w-100">
                             <h2>Danh Sách Giảng Viên</h2>
                             <Link to="/add-giangvien" className="btn btn-primary mb-2">
-                                Add
+                                Thêm giảng viên
                             </Link>
                             <table className="table">
                                 <thead>
@@ -47,6 +63,7 @@ export const ListGiangVien = () => {
                                         <th scope="col">Sđt</th>
                                         <th scope="col">Chức vụ</th>
                                         <th scope="col">Học vị</th>
+                                        <th scope="col">Tùy Chỉnh</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider">
@@ -61,6 +78,20 @@ export const ListGiangVien = () => {
                                             <td>{giangvien.phone}</td>
                                             <td>{giangvien.hocVi}</td>
                                             <td>{giangvien.chucVu}</td>
+                                            <td>
+                                                <Link
+                                                    className="btn btn-info mb-1 mx-1"
+                                                    to={`/edit-giangvien/${giangvien.idGiangVien}`}
+                                                >
+                                                    Update
+                                                </Link>
+                                                <button
+                                                    className="btn btn-danger mb-1 mx-1"
+                                                    onClick={() => deleteGiangVien(giangvien.idGiangVien)}
+                                                >
+                                                    Xóa
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>

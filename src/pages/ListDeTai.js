@@ -33,7 +33,7 @@ export const ListDeTai = () => {
                         <div className="mt-5 w-100">
                             <h2>Danh Sách Đề Tài</h2>
                             <Link to="/add-detai" className="btn btn-primary mb-2">
-                                Add
+                                Thêm đề tài
                             </Link>
                             <table className="table">
                                 <thead>

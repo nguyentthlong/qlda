@@ -1,36 +1,76 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CDBInput } from 'cdbreact';
 import Sidebar from '../Sidebar';
 import Navbar from '../Navbar';
 import StudentService from '../services/StudentService';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export const AddStudent = () => {
     const [msv, setMsv] = useState('');
     const [name, setName] = useState('');
-    const [class_lop, setClass_lop] = useState('');
+    const [lopID, setLopID] = useState('');
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [birthday, setBirthday] = useState('');
     const [gender, setGender] = useState('');
     const [phone, setPhone] = useState('');
+    const [detaiID, setDetaiID] = useState('');
+    const { Msv } = useParams();
     //su dung useHistory hook de dieu huong
     const history = useNavigate();
+
     //e = event
-    const saveStudent = (e) => {
+    const saveOrUpdateStudent = (e) => {
         e.preventDefault();
+        //bug
+        const student = { msv, name, email, address, birthday, gender, phone };
 
-        const student = { msv, name, class_lop, email, address, birthday, gender, phone };
+        if (Msv) {
+            StudentService.updateStudent(Msv, student)
+                .then((response) => {
+                    history('/sinhvien');
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert('Nhập Mã Sinh Viên');
+                });
+        } else {
+            StudentService.createStudent(student)
+                .then((response) => {
+                    console.log(response.data);
+                    history('/sinhvien');
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert('Nhập thông tin');
+                });
+        }
+    };
 
-        StudentService.createStudent(student)
+    useEffect(() => {
+        StudentService.getStudentByMsv(Msv)
             .then((response) => {
-                console.log(response.data);
-                history('/sinhvien');
+                // setMsv(response.data.msv);
+                setName(response.data.name);
+                setEmail(response.data.email);
+                setAddress(response.data.address);
+                setBirthday(response.data.birthday);
+                setGender(response.data.gender);
+                setPhone(response.data.phone);
+                // setLopID(response.data.lopID);
             })
             .catch((error) => {
                 console.log(error);
-                alert('Nhập thông tin');
             });
+    }, []);
+
+    const title = () => {
+        //Msv gọi bên router lấy ra text
+        if (Msv) {
+            return <h2 className="text-center">Sửa Thông Tin Sinh Viên</h2>;
+        } else {
+            return <h2 className="text-center">Thêm Sinh Viên</h2>;
+        }
     };
 
     return (
@@ -46,7 +86,8 @@ export const AddStudent = () => {
                 <div style={{ height: '100%' }}>
                     <div style={{ padding: '20px 5%', height: 'calc(100% - 64px)', overflowY: 'scroll' }}>
                         <div className="mt-5 w-100">
-                            <h4 className="font-weight-bold mb-3">Thêm sinh viên</h4>
+                            {/* <h4 className="font-weight-bold mb-3">Thêm sinh viên</h4> */}
+                            {title()}
                             <div className="form-group mb-2">
                                 <label className="form-label"> Mã Sinh Viên :</label>
                                 <CDBInput
@@ -76,10 +117,10 @@ export const AddStudent = () => {
                                     <input
                                         type="text"
                                         placeholder=""
-                                        name="class_lop"
+                                        name="lopID"
                                         className="form-control"
-                                        value={class_lop}
-                                        onChange={(e) => setClass_lop(e.target.value)}
+                                        value={lopID}
+                                        onChange={(e) => setLopID(e.target.value)}
                                     ></input>
                                 </div>
 
@@ -142,8 +183,21 @@ export const AddStudent = () => {
                                         onChange={(e) => setPhone(e.target.value)}
                                     ></input>
                                 </div>
-                                <button className="btn btn-success" onClick={(e) => saveStudent(e)}>
-                                    Thêm
+
+                                {/* <div className="form-group mb-2">
+                                    <label className="form-label"> id Đề Tài</label>
+                                    <input
+                                        type="number"
+                                        placeholder=""
+                                        name="detaiID"
+                                        className="form-control"
+                                        value={detaiID}
+                                        onChange={(e) => setDetaiID(e.target.value)}
+                                    ></input>
+                                </div> */}
+
+                                <button className="btn btn-success mx-2" onClick={(e) => saveOrUpdateStudent(e)}>
+                                    Đồng ý
                                 </button>
                                 <Link to="/sinhvien" className="btn btn-danger">
                                     Hủy

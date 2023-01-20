@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from './Navbar.style';
 import { CDBNavbar, CDBInput } from 'cdbreact';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     return (
@@ -12,10 +13,11 @@ const Navbar = () => {
                     Search
                 </button>
                 <div className="ml-auto">
-                    <i className="fas fa-bell mx-5"></i>
-                    <i className="fas fa-comment-alt mx-=5"></i>
-                    {/* <img alt="" src="" style={{ width: '3rem', height: '3rem' }} /> */}
-                    {/* <logout></logout> */}
+                    <Link extract to="/login" activeClassName="activeClicked">
+                        <button className="btn btn-light mx-3" type="submit">
+                            Login
+                        </button>
+                    </Link>
                 </div>
             </CDBNavbar>
         </Header>

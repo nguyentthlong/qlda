@@ -11,9 +11,17 @@ class GiangVienService {
         return axios.post(GIANGVIEN_API_URL, giangvien);
     }
 
-    // createLop(lop) {
-    //     return axios.post(STUDENT_API_URL, lop);
-    // }
+    getGiangVienById(giangvienId) {
+        return axios.get(GIANGVIEN_API_URL + '/' + giangvienId);
+    }
+
+    updateGiangVien(giangvienId, giangvien) {
+        return axios.put(GIANGVIEN_API_URL + '/' + giangvienId, giangvien);
+    }
+
+    deleteGiangVien(giangvienId) {
+        return axios.delete(GIANGVIEN_API_URL + '/' + giangvienId);
+    }
 }
 
 export default new GiangVienService();
